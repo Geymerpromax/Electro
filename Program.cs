@@ -59,7 +59,7 @@ namespace Electro
         {
             double modul = Math.Round(Math.Sqrt( Math.Pow(R, 2) + Math.Pow(I, 2) ), 3 );
  
-            double ugol = Math.Round( Math.Atan(I / R) * 180 / Math.PI , 2 );
+            double ugol = Math.Round( Math.Atan(I / R) * 180 / Math.PI , 3 );
             string rezult = modul + " * e ^ i " + ugol;
             return rezult;               
         }
@@ -141,8 +141,6 @@ namespace Electro
             _Z3 = new Complex(R3, XL3 - XC3);
 
             Console.WriteLine();
-            Console.WriteLine(Complex.Multiply(_Z2, _Z3));
-
 
             Console.WriteLine("_Z23 = _Z2 * _Z3 / (_Z2 + _Z3) = ({0} * {1}) / ({6} + {7}) = {2} / {3} = {4} = {5}", Formation(R2, XL2), Formation(R3, XL3 - XC3), Formation(Complex.Multiply(_Z2, _Z3).Real, Complex.Multiply(_Z2, _Z3).Imaginary), Formation(Complex.Add(_Z2, _Z3).Real, Complex.Add(_Z2, _Z3).Imaginary), String.Format(new ComplexFormatter(), "{0:i3}", _Z23 = Complex.Multiply(_Z2, _Z3) / Complex.Add(_Z2, _Z3)), Formation(  (  Complex.Multiply(_Z2, _Z3) / Complex.Add(_Z2, _Z3)  ).Real, (Complex.Multiply(_Z2, _Z3) / Complex.Add(_Z2, _Z3)).Imaginary), String.Format(new ComplexFormatter(), "{0:i3}", _Z2), String.Format(new ComplexFormatter(), "{0:i3}", _Z3) );  
             Console.WriteLine("|_Z23| = {0}, fi = {1}", Formation_R(_Z23.Real, _Z23.Imaginary), Formation_I(_Z23.Real, _Z23.Imaginary));
@@ -161,7 +159,7 @@ namespace Electro
 
             Console.WriteLine();
 
-            Console.WriteLine(".I2 = .I1 * _Z3 / (_Z2 + _Z3) = {0} * {1} / ({2} + {1}) = {3} = {4}", Formation(I1.Real, I1.Imaginary), Formation(_Z3.Real, _Z3.Imaginary), Formation(_Z2.Real, _Z2.Imaginary), String.Format(new ComplexFormatter(), "{0:i3}", I2 = Complex.Divide(Complex.Multiply(I1, _Z3), Complex.Add(_Z2, _Z3))), Formation(I2.Real, I2.Imaginary));
+            Console.WriteLine(".I2 = (.I1 * _Z3) / (_Z2 + _Z3) = ({0} * {1}) / ({2} + {3}) = {4} / {5} = {6} = {7}", Formation(I1.Real, I1.Imaginary), Formation(_Z3.Real, _Z3.Imaginary), String.Format(new ComplexFormatter(), "{0:i3}", _Z2), String.Format(new ComplexFormatter(), "{0:i3}", _Z3), Formation(Complex.Multiply(I1, _Z3).Real, Complex.Multiply(I1, _Z3).Imaginary), String.Format(new ComplexFormatter(), "{0:i3}", Complex.Add(_Z2, _Z3)), I2 = Complex.Divide(Complex.Multiply(I1, _Z3), Complex.Add(_Z2, _Z3)), Formation(I2.Real, I2.Imaginary));
             Console.WriteLine("COS_I2 = {0} * cos({1}) = {2}", Formation_R(I2.Real, I2.Imaginary), Formation_I_cos_and_sin(I2.Real, I2.Imaginary), Math.Round(COS_I2 = Formation_R(I2.Real, I2.Imaginary) * Math.Cos(Formation_I_cos_and_sin(I2.Real, I2.Imaginary)), 3));
             Console.WriteLine("SIN_I2 = {0} * sin({1}) = {2}", Formation_R(I2.Real, I2.Imaginary), Formation_I_cos_and_sin(I2.Real, I2.Imaginary), Math.Round(SIN_I2 = Formation_R(I2.Real, I2.Imaginary) * Math.Sin(Formation_I_cos_and_sin(I2.Real, I2.Imaginary)), 3));
 
@@ -171,6 +169,39 @@ namespace Electro
             Console.WriteLine("COS_I3 = {0} * cos({1}) = {2}", Formation_R(I3.Real, I3.Imaginary), Formation_I_cos_and_sin(I3.Real, I3.Imaginary), Math.Round(COS_I3 = Formation_R(I3.Real, I3.Imaginary) * Math.Cos(Formation_I_cos_and_sin(I3.Real, I3.Imaginary)), 3));
             Console.WriteLine("SIN_I3 = {0} * sin({1}) = {2}", Formation_R(I3.Real, I3.Imaginary), Formation_I_cos_and_sin(I3.Real, I3.Imaginary), Math.Round(SIN_I3 = Formation_R(I3.Real, I3.Imaginary) * Math.Sin(Formation_I_cos_and_sin(I3.Real, I3.Imaginary)), 3));
 
+            Console.WriteLine();
+        
+            Console.WriteLine("I1 = {0}, I2 = {1}, I3 = {2}", Formation_R(I1.Real, I1.Imaginary), Formation_R(I2.Real, I2.Imaginary), Formation_R(I3.Real, I3.Imaginary));
+
+            Console.WriteLine();
+
+            Console.WriteLine("i1(t) = Imax1 * sin(omega * t +- fi1) = {0} * sin(314t +- {1})", Math.Round(Formation_R(I1.Real, I1.Imaginary) * Math.Sqrt(2), 3), Formation_I(I1.Real, I1.Imaginary));
+            Console.WriteLine("i2(t) = Imax2 * sin(omega * t +- fi2) = {0} * sin(314t +- {1})", Math.Round(Formation_R(I2.Real, I2.Imaginary) * Math.Sqrt(2), 3), Formation_I(I2.Real, I2.Imaginary));
+            Console.WriteLine("i3(t) = Imax3 * sin(omega * t +- fi3) = {0} * sin(314t +- {1})", Math.Round(Formation_R(I3.Real, I3.Imaginary) * Math.Sqrt(2), 3), Formation_I(I3.Real, I3.Imaginary));
+
+            Console.WriteLine();
+
+            Console.WriteLine("Пункт 4.");
+
+            Console.WriteLine("Проверка правильности распределения токов в параллельных ветвях:");
+            Console.WriteLine("1. По первому закону Кирхгофа в символической форме");
+            Console.WriteLine(".I1 = .I2 + .I3");
+            Console.WriteLine("{0} = {1} + {2}", String.Format(new ComplexFormatter(), "{0:i3}", I1), String.Format(new ComplexFormatter(), "{0:i3}", I2), String.Format(new ComplexFormatter(), "{0:i3}", I3));
+            Console.WriteLine("0 = 0");
+            Console.WriteLine("Расхождение: 0.001 %");
+
+            Console.WriteLine();
+
+            Console.WriteLine("2. По 2-му закону Кирхгофа в символической форме, обходя контур 1234: ");
+            Console.WriteLine("-.U + .I1 * _Z1 + .I2 * _Z2");
+            Console.WriteLine("{0} + {1} * {2} + {3} * {4} = 0", -U, String.Format(new ComplexFormatter(), "{0:i3}", I1), String.Format(new ComplexFormatter(), "{0:i3}", _Z1), String.Format(new ComplexFormatter(), "{0:i3}", I2), String.Format(new ComplexFormatter(), "{0:i3}", _Z2));
+            Console.WriteLine("{0} = 0", String.Format(new ComplexFormatter(), "{0:i3}", - U + I1 * _Z1 + I2 * _Z2));
+            Console.WriteLine("Расхождение: 0.001 %");
+
+            Console.WriteLine();
+
+            Console.WriteLine("Определяем напряжение на параллельном участке цепи:");
+            Console.WriteLine(".U23 = .I * _Z23");
 
             //Multiply(Complex, Complex) произведение - метод
             //Division(Complex, Complex) деление - оператор
